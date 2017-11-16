@@ -12,7 +12,7 @@ import org.apache.shiro.authc.RememberMeAuthenticationToken;
  *
  * @author keyez
  */
-public class CtChanShiroToken implements HostAuthenticationToken, RememberMeAuthenticationToken {
+public class CtChanNearToken implements HostAuthenticationToken, RememberMeAuthenticationToken {
     private String username;
     private String password;
     private boolean isRememberMe = false;

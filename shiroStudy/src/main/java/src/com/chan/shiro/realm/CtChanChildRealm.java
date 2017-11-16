@@ -1,21 +1,23 @@
 package com.chan.shiro.realm;
 
-import com.chan.shiro.token.CtChanChildToken;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.realm.Realm;
 import com.chan.shiro.token.CtChanShiroToken;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.realm.Realm;
 
 /**
  * Created by keyez on 2017/11/15.
  */
-public class CtChanShrioRealm implements Realm {
+public class CtChanChildRealm implements Realm {
 
 
     private Class<? extends CtChanShiroToken> supportsTokenClass = CtChanShiroToken.class;
 
     @Override
     public String getName() {
-        return CtChanShrioRealm.class.getName();
+        return CtChanChildRealm.class.getName();
     }
 
     @Override
