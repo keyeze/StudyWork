@@ -7,29 +7,23 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 
-import javax.naming.CommunicationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by keyez on 2017/11/15.
  */
-public class CtChanShrioRealm extends AuthorizingRealm {
+public class CtChanShiroRealm extends AuthorizingRealm {
     private static final String host;
     private static final String domain;
     private static final String url;
@@ -71,7 +65,7 @@ public class CtChanShrioRealm extends AuthorizingRealm {
 
     @Override
     public String getName() {
-        return CtChanShrioRealm.class.getName();
+        return CtChanShiroRealm.class.getName();
     }
 
     @Override
@@ -106,6 +100,20 @@ public class CtChanShrioRealm extends AuthorizingRealm {
                 }
             }
         }
+        return null;
+    }
+
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        System.out.println(principals);
+        CtChanShiroRealm.Principal principal = (Principal) principals.getPrimaryPrincipal();
+        String OU = principal.getOU();
+        //获取系统权限
+        List roles = null;
+        if (searchRolesExecutor != null) {
+            roles = searchRolesExecutor.searchRoles(OU);
+        }
+        //略...
         return null;
     }
 
@@ -158,17 +166,5 @@ public class CtChanShrioRealm extends AuthorizingRealm {
         return OU;
     }
 
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println(principals);
-        CtChanShrioRealm.Principal principal = (Principal) principals.getPrimaryPrincipal();
-        String OU = principal.getOU();
-        //获取系统权限
-        List roles = null;
-        if (searchRolesExecutor != null) {
-            roles = searchRolesExecutor.searchRoles(OU);
-        }
-        //略...
-        return null;
-    }
+
 }
